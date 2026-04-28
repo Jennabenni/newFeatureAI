@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What am I Worth?</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <span class="nav-logo">What am I Worth?</span>
+      <ul class="nav-links">
+        <li><a href="#hourly">Hourly</a></li>
+        <li><a href="#flat">Flat Rate</a></li>
+        <li><a href="#value">Value-Based</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <h1>Price Your Work <span class="accent">Confidently</span></h1>
+    <p>
+      Three pricing models for web designers &amp; developers. Know your worth
+      before sending that invoice.
+    </p>
+    <div class="hero-badges">
+      <a href="#hourly" class="badge">Hourly</a>
+      <a href="#flat" class="badge">Flat Rate</a>
+      <a href="#value" class="badge">Value-Based</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ─── HOURLY ─── -->
+    <section id="hourly" class="section">
+      <div class="section-label">Model 01</div>
+      <h2 class="section-title">Hourly Rate</h2>
+      <p class="section-desc">
+        Track every hour and add commission on top. Great for ongoing or
+        scope-creep-prone projects.
+      </p>
+
+      <div class="card">
+        <div class="form-grid">
+          <div class="field">
+            <label for="h-rate">Hourly Rate <span class="currency">($)</span></label>
+            <input id="h-rate" type="number" min="0" step="0.01" placeholder="75" />
+          </div>
+          <div class="field">
+            <label for="h-hours">Hours Worked</label>
+            <input id="h-hours" type="number" min="0" step="0.5" placeholder="40" />
+          </div>
+          <div class="field">
+            <label for="h-commission">Commission / Markup <span class="currency">(%)</span></label>
+            <input id="h-commission" type="number" min="0" max="200" step="0.5" placeholder="10" />
+          </div>
+        </div>
+
+        <button class="btn" onclick="calcHourly()">Calculate</button>
+
+        <div class="result" id="hourly-result" aria-live="polite">
+          <div class="result-row">
+            <span>Base Total</span>
+            <span id="h-base">—</span>
+          </div>
+          <div class="result-row">
+            <span>Commission</span>
+            <span id="h-commission-amt">—</span>
+          </div>
+          <div class="result-row result-total">
+            <span>Total to Invoice</span>
+            <span id="h-total">—</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── FLAT RATE ─── -->
+    <section id="flat" class="section section-alt">
+      <div class="section-label">Model 02</div>
+      <h2 class="section-title">Flat Rate</h2>
+      <p class="section-desc">
+        Choose a project type. We estimate the hours based on industry
+        standards and apply your rate.
+      </p>
+
+      <div class="card">
+        <!-- Base rate -->
+        <div class="field" style="max-width: 260px;">
+          <label for="f-rate">Your Base Hourly Rate <span class="currency">($)</span></label>
+          <input id="f-rate" type="number" min="0" step="0.01" placeholder="75" />
+        </div>
+
+        <!-- Project type tabs -->
+        <div class="tabs" role="tablist">
+          <button class="tab active" role="tab" aria-selected="true" onclick="switchTab('static')" id="tab-static">
+            Static Website
+          </button>
+          <button class="tab" role="tab" aria-selected="false" onclick="switchTab('multi')" id="tab-multi">
+            Multi-Feature Website
+          </button>
+        </div>
+
+        <!-- Static panel -->
+        <div class="tab-panel" id="panel-static">
+          <p class="panel-hint">
+            A static site is informational — no backend or user logins. Built
+            with HTML/CSS/JS or a static site generator.
+          </p>
+          <div class="check-group">
+            <label class="check-card">
+              <input type="checkbox" id="s-design" onchange="calcFlat()" />
+              <div>
+                <strong>Custom Design</strong>
+                <span>Wireframes, mockups &amp; visual design (+15 hrs)</span>
+              </div>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" id="s-responsive" onchange="calcFlat()" />
+              <div>
+                <strong>Responsive / Mobile Optimization</strong>
+                <span>Cross-device testing and breakpoint work (+5 hrs)</span>
+              </div>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" id="s-seo" onchange="calcFlat()" />
+              <div>
+                <strong>Basic SEO Setup</strong>
+                <span>Meta tags, sitemap, robots.txt (+4 hrs)</span>
+              </div>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" id="s-animations" onchange="calcFlat()" />
+              <div>
+                <strong>Animations &amp; Interactions</strong>
+                <span>Scroll effects, hover states, transitions (+6 hrs)</span>
+              </div>
+            </label>
+          </div>
+          <p class="estimate-note">Base estimate: <strong>20 hours</strong> development</p>
+        </div>
+
+        <!-- Multi-feature panel -->
+        <div class="tab-panel hidden" id="panel-multi">
+          <p class="panel-hint">
+            A dynamic website with server-side logic, integrations, or
+            user-facing features. Select everything that applies.
+          </p>
+          <div class="check-group">
+            <label class="check-card">
+              <input type="checkbox" id="m-design" onchange="calcFlat()" />
+              <div>
+                <strong>Custom Design</strong>
+                <span>Full UI/UX design process (+15 hrs)</span>
+              </div>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" id="m-contact" onchange="calcFlat()" />
+              <div>
+                <strong>Contact Form</strong>
+                <span>Form handling, validation &amp; email notifications (+4 hrs)</span>
+              </div>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" id="m-cms" onchange="calcFlat()" />
+              <div>
+                <strong>CMS / Blog</strong>
+                <span>Content management system integration (+10 hrs)</span>
+              </div>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" id="m-auth" onchange="calcFlat()" />
+              <div>
+                <strong>User Authentication</strong>
+                <span>Login, registration, password reset (+12 hrs)</span>
+              </div>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" id="m-ecommerce" onchange="calcFlat()" />
+              <div>
+                <strong>E-Commerce Shop</strong>
+                <span>Product listings, cart &amp; checkout flow (+25 hrs)</span>
+              </div>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" id="m-api" onchange="calcFlat()" />
+              <div>
+                <strong>Third-Party API Integration</strong>
+                <span>Maps, payments, social feeds, etc. (+8 hrs)</span>
+              </div>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" id="m-seo" onchange="calcFlat()" />
+              <div>
+                <strong>SEO Package</strong>
+                <span>Full audit, optimization &amp; structured data (+5 hrs)</span>
+              </div>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" id="m-responsive" onchange="calcFlat()" />
+              <div>
+                <strong>Responsive / Mobile Optimization</strong>
+                <span>Cross-device testing and breakpoint work (+5 hrs)</span>
+              </div>
+            </label>
+          </div>
+          <p class="estimate-note">Base estimate: <strong>30 hours</strong> development</p>
+        </div>
+
+        <button class="btn" onclick="calcFlat()">Calculate</button>
+
+        <div class="result" id="flat-result" aria-live="polite">
+          <div class="result-row">
+            <span>Base Hours</span>
+            <span id="f-base-hours">—</span>
+          </div>
+          <div class="result-row">
+            <span>Add-On Hours</span>
+            <span id="f-addon-hours">—</span>
+          </div>
+          <div class="result-row">
+            <span>Total Hours</span>
+            <span id="f-total-hours">—</span>
+          </div>
+          <div class="result-row result-total">
+            <span>Flat-Rate Quote</span>
+            <span id="f-total">—</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── VALUE-BASED ─── -->
+    <section id="value" class="section section-alt">
+      <div class="section-label">Model 03</div>
+      <h2 class="section-title">Value-Based</h2>
+      <p class="section-desc">
+        Price based on the ROI your work generates for the client — not how
+        long it took you. Industry standard is 10–20% of projected value.
+      </p>
+
+      <div class="card">
+        <div class="form-grid">
+          <div class="field">
+            <label for="v-revenue">Client's Monthly Revenue <span class="currency">($)</span></label>
+            <input id="v-revenue" type="number" min="0" step="100" placeholder="50000" />
+          </div>
+          <div class="field">
+            <label for="v-increase">Expected Revenue Increase <span class="currency">(%)</span></label>
+            <input id="v-increase" type="number" min="0" max="200" step="0.5" placeholder="15" />
+          </div>
+          <div class="field">
+            <label for="v-horizon">Time Horizon</label>
+            <select id="v-horizon">
+              <option value="6">6 months</option>
+              <option value="12" selected>1 year</option>
+              <option value="24">2 years</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="slider-field">
+          <label for="v-cut">
+            Your pricing cut: <strong id="v-cut-label">15%</strong>
+            <span class="currency">(drag to adjust)</span>
+          </label>
+          <input id="v-cut" type="range" min="10" max="20" step="0.5" value="15" oninput="updateCutLabel(this.value)" />
+          <div class="slider-ends">
+            <span>10% — Conservative</span>
+            <span>20% — Premium</span>
+          </div>
+        </div>
+
+        <button class="btn" onclick="calcValue()">Calculate</button>
+
+        <div class="result" id="value-result" aria-live="polite">
+          <div class="result-row">
+            <span>Client's Projected Revenue Increase</span>
+            <span id="v-roi">—</span>
+          </div>
+          <div class="result-row">
+            <span>Conservative Quote (10%)</span>
+            <span id="v-low">—</span>
+          </div>
+          <div class="result-row">
+            <span>Mid-Range Quote (15%)</span>
+            <span id="v-mid">—</span>
+          </div>
+          <div class="result-row">
+            <span>Premium Quote (20%)</span>
+            <span id="v-high">—</span>
+          </div>
+          <div class="result-row result-total">
+            <span>Your Suggested Price</span>
+            <span id="v-total">—</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>FreelanceCalc &mdash; Built for web designers &amp; developers.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
